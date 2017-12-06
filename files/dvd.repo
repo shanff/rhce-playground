@@ -1,0 +1,6 @@
+[dvd]
+name=Scientific Linux $slreleasever - $basearch - DVD
+baseurl=file:///media/dvd
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-sl file:///etc/pki/rpm-gpg/RPM-GPG-KEY-sl7
