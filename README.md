@@ -50,7 +50,7 @@ Master node runs IPA services. Users: `user1`..`user5` with password `secretpass
 
 IPA admin principal: `admin@RHCE.LOCAL` password: `rhcelocal`
 
-# What do you need? (to prepara EX300)
+# What do you need? (to prepare EX300)
 
 Probably these:
 
