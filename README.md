@@ -4,11 +4,15 @@ RHCE Vagrant environment for EX300 preparation
 
 # Quick start
 
-1. Requirements: `vagrant`, `libvirt`
+1. Requirements: `vagrant`, `libvirt` and `vagrant-triggers` plugin
 
-Fedora:
+Install example on Fedora:
 
 		$ sudo dnf install vagrant vagrant-libvirt
+
+`vagrant-triggers` is used to mount the DVD on the Master node once vagrant has finished configuring the shared NFS folder on it:
+
+		$ vagrant plugin install vagrant-triggers
 
 1. Get a scientific-linux vagrant box (minimal installation)
 

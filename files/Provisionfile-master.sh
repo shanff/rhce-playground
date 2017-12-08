@@ -12,7 +12,7 @@ mount -o loop,rw /vagrant/iso/SL-7-DVD-x86_64.iso /media/dvd
 semanage fcontext -a -t httpd_sys_content_t "/media/dvd(/.*)?"
 restorecon -R /media/dvd
 sed -i -e '#/media/dvd#/d' /etc/fstab
-echo "/vagrant/iso/SL-7-DVD-x86_64.iso /media/dvd iso9660 ro,relatime 0 0" | tee -a /etc/fstab
+echo "/vagrant/iso/SL-7-DVD-x86_64.iso /media/dvd iso9660 ro,relatime,nofail 0 0" | tee -a /etc/fstab
 sed -i -e 's/enabled=1/enabled=0/g' /etc/yum.repos.d/*.repo
 cp -f /vagrant/files/dvd.repo /etc/yum.repos.d/.
 

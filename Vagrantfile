@@ -85,6 +85,9 @@ Vagrant.configure("2") do |config|
 	end
   	node.vm.synced_folder './', '/vagrant', type: 'nfs', nfs_udp: false 
   	node.vm.provision "shell", path: "files/Provisionfile-master.sh"
+	node.trigger.after :up do
+		  run_remote  "sudo /usr/bin/mount -a"
+	end
     else
         node.vm.synced_folder './', '/vagrant', disabled: true
   	node.vm.provision "shell", path: "files/Provisionfile-node.sh"
