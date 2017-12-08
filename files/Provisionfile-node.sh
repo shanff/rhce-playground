@@ -4,15 +4,16 @@ ip r flush 0/0
 
 # mkdir -p /media/dvd
 # mount -o loop,rw /vagrant/SL-7-DVD-x86_64.iso /media/dvd
-rm -f /etc/yum.repos.d/*.repo
 # cp /vagrant/dvd.repo /etc/yum.repos.d/.
-curl -o /etc/yum.repos.d/dvd-http.repo http://master/rhce/dvd-http.repo
-# yum clean all
-# yum makecache fast
 
-cat<<EOF | sudo tee /etc/yum.repos.d/sl7.repo
-[sl]
-name=Scientific Linux $slreleasever - $basearch
+sed -i -e 's/enabled=1/enabled=0/g' /etc/yum.repos.d/*.repo
+rm -f /etc/yum.repos.d/dvd-http.repo
+
+# curl -o /etc/yum.repos.d/dvd-http.repo http://master/rhce/dvd-http.repo
+
+cat<<EOF | sudo tee /etc/yum.repos.d/dvd-http.repo
+[dvd-http]
+name=Scientific Linux $slreleasever - $basearch on Master
 baseurl=http://master/repo/
 enabled=1
 gpgcheck=1
