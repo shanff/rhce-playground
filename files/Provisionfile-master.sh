@@ -7,6 +7,8 @@ USERXPASS="secretpassword" # user1..5 password
 
 set -x
 
+nmcli c modify eth0 connection.autoconnect yes
+
 mkdir -p /media/dvd
 mount -o loop,rw /vagrant/iso/SL-7-DVD-x86_64.iso /media/dvd
 semanage fcontext -a -t httpd_sys_content_t "/media/dvd(/.*)?"
@@ -46,14 +48,16 @@ echo "$IPAPASS" | kinit admin
 for node in node{1..2}; do 
   mkdir -p /rhce/${node}
   ipa host-add --force ${node}.$DOMAIN
-  ipa service-add --force nfs/${node}.$DOMAIN
-  kadmin.local ktadd nfs/${node}.$DOMAIN
-  ipa-getkeytab -s ipa.rhce.local -p nfs/${node}.$DOMAIN -k /rhce/${node}/${node}.keytab
-  chmod o+r /rhce/${node}/${node}.keytab
-  /etc/ssl/certs/make-dummy-cert ${node}.pem
-  kadmin.local -q "addprinc -randkey host/${node}.$DOMAIN"
-  kadmin.local -q "ktadd –k /etc/krb5.keytab.${node} host/${node}.$DOMAIN"
+  for service in nfs smb http; do
+    ipa service-add --force $service/${node}.$DOMAIN
+    ipa-getkeytab -s master.$DOMAIN -p nfs/${node}.$DOMAIN -k /rhce/${node}/krb5.keytab
+  done
+  # kadmin.local ktadd nfs/${node}.$DOMAIN
+  # kadmin.local -q "addprinc -randkey host/${node}.$DOMAIN"
+  # kadmin.local -q "ktadd -k /etc/krb5.keytab.${node} host/${node}.$DOMAIN"
+  /etc/ssl/certs/make-dummy-cert /rhce/${node}/${node}.pem
 done
+chmod o+r -R /rhce/
 
 mkdir -p /rhce/$NAME
 cp -f /vagrant/files/dvd-http.repo /rhce/.
